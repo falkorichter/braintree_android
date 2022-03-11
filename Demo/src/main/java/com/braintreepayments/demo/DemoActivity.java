@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,16 +23,12 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.braintreepayments.api.BraintreeClient;
-
 import java.util.Arrays;
 import java.util.List;
 
 public class DemoActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback, ActionBar.OnNavigationListener {
 
     private AppBarConfiguration appBarConfiguration;
-
-    private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +38,6 @@ public class DemoActivity extends AppCompatActivity implements ActivityCompat.On
 
         setupActionBar();
         setProgressBarIndeterminateVisibility(true);
-
-        registerSharedPreferencesListener();
     }
 
     @Override
@@ -61,11 +54,6 @@ public class DemoActivity extends AppCompatActivity implements ActivityCompat.On
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private NavController getNavController() {
@@ -101,10 +89,6 @@ public class DemoActivity extends AppCompatActivity implements ActivityCompat.On
                 || super.onSupportNavigateUp();
     }
 
-    private void performReset() {
-        setProgressBarIndeterminateVisibility(true);
-    }
-
     public void showDialog(String message) {
         new AlertDialog.Builder(this)
                 .setMessage(message)
@@ -121,9 +105,6 @@ public class DemoActivity extends AppCompatActivity implements ActivityCompat.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.reset:
-                performReset();
-                return true;
             case R.id.settings:
                 NavController navController = getNavController();
                 navController.navigate(R.id.open_settings_fragment);
@@ -133,23 +114,11 @@ public class DemoActivity extends AppCompatActivity implements ActivityCompat.On
         }
     }
 
-    @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         String env = getResources().getStringArray(R.array.environments)[itemPosition];
         if (!Settings.getEnvironment(this).equals(env)) {
             Settings.setEnvironment(this, env);
-            performReset();
         }
         return true;
-    }
-
-    private void registerSharedPreferencesListener() {
-        sharedPreferenceChangeListener = (sharedPreferences, s) -> {
-            // reset api client
-            DemoApplication.resetApiClient();
-            performReset();
-        };
-        Settings.getPreferences(this)
-                .registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
     }
 }
