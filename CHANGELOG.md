@@ -6,6 +6,7 @@
   * Upgrade `targetSdkVersion` and `compileSdkVersion` to API 33
 * ThreeDSecure
   * Bump Cardinal version to `2.2.7-2`
+  * Add docstring for `ThreeDSecureRequest.dataOnlyRequested`
 * BraintreeCore
   * Bump `browser-switch` version to `2.3.1`
 

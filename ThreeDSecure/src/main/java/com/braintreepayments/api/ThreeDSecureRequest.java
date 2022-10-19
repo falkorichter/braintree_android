@@ -150,6 +150,13 @@ public class ThreeDSecureRequest implements Parcelable {
         this.challengeRequested = challengeRequested;
     }
 
+    /**
+     * Optional. Indicates whether to use the data only flow. In this flow, frictionless 3DS is ensured
+     * for Mastercard cardholders as the card scheme provides a risk score for the issuer to determine
+     * whether to approve.
+     * 
+     * @param dataOnlyRequested
+     */
     public void setDataOnlyRequested(boolean dataOnlyRequested) {
         this.dataOnlyRequested = dataOnlyRequested;
     }
