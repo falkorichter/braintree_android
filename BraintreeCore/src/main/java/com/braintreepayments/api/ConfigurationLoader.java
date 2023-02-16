@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Base64;
 
+import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 
 import org.json.JSONException;
